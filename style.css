@@ -1,0 +1,182 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at bottom, #0d1b2a, #000);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#controls {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    box-shadow: 0 0 15px rgba(0, 255, 229, 0.5);
+}
+
+#treeWrapper {
+    flex: 1;
+    position: relative;
+    margin-top: 80px;
+    margin-bottom: 200px;
+    margin-left: 20px;
+    margin-right: 320px;
+    overflow: auto;
+}
+
+#treeContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+}
+
+#svgContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#infoPanel {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    width: 280px;
+    max-height: 200px;
+    z-index: 100;
+    box-shadow: 0 0 15px rgba(0, 255, 229, 0.5);
+}
+
+.tree-node {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(145deg, #1e3c72, #2a5298);
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+    font-weight: bold;
+    border: 2px solid #ccc;
+    transition: all 0.3s ease;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 12px;
+}
+
+.balance-factor {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background: #000;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border: 1px solid #fff;
+}
+
+.height-display {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #000;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border: 1px solid #fff;
+    color: #ff9d00;
+}
+
+#controls button, #controls input {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(145deg, #1e3c72, #2a5298);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 5px #00ffe5;
+}
+
+#controls button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #00ffe5;
+}
+
+#controls input {
+    width: 100px;
+    padding: 8px;
+}
+
+#operationLog {
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+.log-entry {
+    margin-bottom: 5px;
+    padding: 3px;
+    border-left: 3px solid #00ffe5;
+    padding-left: 5px;
+}
+
+.highlight {
+    animation: highlight 0.5s ease;
+}
+
+.rotation-highlight {
+    background-color: #ff5722 !important;
+    box-shadow: 0 0 20px #ff5722 !important;
+    transition: all 0.3s ease;
+}
+
+.tree-connection {
+    stroke: #4a8eff;
+    stroke-width: 2;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.tree-node.unbalanced {
+    box-shadow: 0 0 8px #ff0000;
+}
+
+.tree-node.balanced {
+    box-shadow: 0 0 5px #00ffe5;
+}
+
+@keyframes highlight {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}

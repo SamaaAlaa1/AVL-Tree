@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVL Tree Visualization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <div id="controls">
+            <input type="number" id="valueInput" placeholder="Enter value">
+            <button id="insertBtn">Insert</button>
+            <button id="deleteBtn">Delete</button>
+            <button id="clearBtn">Clear Tree</button>
+        </div>
+
+        <div id="main-content">
+            <div id="treeContainer">
+                <svg id="svgContainer" xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+            <div id="infoPanel">
+                <h3>Operation Log</h3>
+                <div id="operationLog"></div>
+            </div>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
