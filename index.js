@@ -27,7 +27,7 @@ class Node {
   updateDisplay(balance) {
     this.heightElement.textContent = this.height;
     this.balanceElement.textContent = balance !== undefined ? balance : "";
-    this._lastBalance = balance; 
+    this._lastBalance = balance;
 
     if (balance > 1 || balance < -1) {
       this.element.classList.remove("balanced");
@@ -83,9 +83,10 @@ class Node {
 class AVLTree {
   constructor() {
     this.root = null;
-    this.levelGap = 80;
-    this.horizontalGap = 50;
+    this.levelGap = 60;
+    this.horizontalGap = 40;
     this.animationSpeed = 1;
+    this.maxWidth = 0;
   }
 
   height(node) {
@@ -113,9 +114,9 @@ class AVLTree {
 
     this.reposition(
       this.root,
-      window.innerWidth / 2,
-      50,
-      window.innerWidth / 4
+      this.getTreeCenter(),
+      30,
+      this.getInitialSpread()
     );
 
     setTimeout(() => updateLines(this.root), 350);
@@ -140,13 +141,53 @@ class AVLTree {
 
       this.reposition(
         this.root,
-        window.innerWidth / 2,
-        50,
-        window.innerWidth / 4
+        this.getTreeCenter(),
+        30,
+        this.getInitialSpread()
       );
     });
     setTimeout(() => updateLines(this.root), 350);
     return y;
+  }
+
+  getTreeCenter() {
+    const treeWidth = this.calculateTreeWidth(this.root);
+    const container = document.getElementById("treeContainer");
+    const containerWidth = container.offsetWidth;
+
+    // If tree is wider than container, center it in the middle of its own width
+    if (treeWidth > containerWidth) {
+      return treeWidth / 2;
+    }
+    // Otherwise center in container
+    return containerWidth / 2;
+  }
+
+  calculateTreeWidth(node) {
+    if (!node) return 0;
+    // Calculate the maximum x position the tree will occupy
+    let minX = Infinity;
+    let maxX = -Infinity;
+
+    const traverse = (n, x, level) => {
+      if (!n) return;
+
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+
+      const spread = this.getInitialSpread() / Math.pow(2, level);
+      traverse(n.left, x - spread, level + 1);
+      traverse(n.right, x + spread, level + 1);
+    };
+
+    traverse(node, 0, 0);
+
+    return maxX - minX + 100; // Add some padding
+  }
+
+  getInitialSpread() {
+    const container = document.getElementById("treeContainer");
+    return Math.min(container.offsetWidth / 3, 300); // Limit maximum spread
   }
 
   insert(data) {
@@ -156,9 +197,9 @@ class AVLTree {
     this.root = this._insert(this.root, data);
     this.reposition(
       this.root,
-      window.innerWidth / 2,
-      50,
-      window.innerWidth / 4
+      this.getTreeCenter(),
+      30,
+      this.getInitialSpread()
     );
   }
 
@@ -206,9 +247,9 @@ class AVLTree {
     this.root = this._delete(this.root, data);
     this.reposition(
       this.root,
-      window.innerWidth / 2,
-      50,
-      window.innerWidth / 4
+      this.getTreeCenter(),
+      30,
+      this.getInitialSpread()
     );
   }
 
@@ -312,9 +353,9 @@ function drawLine(parentNode, childNode) {
 
   const balance = Math.abs(parentNode._lastBalance);
   if (balance > 1) {
-    line.setAttribute("stroke", "#ff4a4a"); // Red for unbalanced
+    line.setAttribute("stroke", "#ff4a4a");
   } else {
-    line.setAttribute("stroke", "#4a8eff"); // Blue for balanced
+    line.setAttribute("stroke", "#4a8eff");
   }
 
   svg.appendChild(line);
@@ -326,7 +367,6 @@ function updateLines(node) {
 
   clearLines();
 
-  // Redraw all lines
   function drawConnections(currentNode) {
     if (!currentNode) return;
 
@@ -405,6 +445,7 @@ function findLineBetweenNodes(node1, node2) {
   }
   return null;
 }
+
 function logOperation(message) {
   const log = document.getElementById("operationLog");
   const entry = document.createElement("div");
@@ -440,6 +481,16 @@ document.getElementById("valueInput").addEventListener("keypress", (e) => {
   }
 });
 
-// Initial log message
+window.addEventListener("resize", () => {
+  if (tree.root) {
+    tree.reposition(
+      tree.root,
+      tree.getTreeCenter(),
+      30,
+      tree.getInitialSpread()
+    );
+  }
+});
+
 logOperation("AVL Tree Visualization Ready");
 logOperation("Enter a value and click Insert or Delete");
